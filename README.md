@@ -46,7 +46,7 @@ Este é um projeto de **Mini ERP** desenvolvido com **Laravel** que permite o ge
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/mini-erp.git
+git clone https://github.com/gabrieldzuman/mini-erp
 cd mini-erp
 ```
 
