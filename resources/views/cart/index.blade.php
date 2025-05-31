@@ -5,94 +5,132 @@
     <h2>Carrinho</h2>
 
     @if(session('cart') && count(session('cart')) > 0)
-        <table class="table">
+       <table class="table">
             <thead>
                 <tr>
-                    <th>Produto</th>
-                    <th>Variação</th>
+                    <th>Produto / Variação</th>
                     <th>Quantidade</th>
                     <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
                 @php $subtotal = 0; @endphp
-                @foreach(session('cart') as $item)
+                @foreach(session('cart') as $id => $item)
                     @php $subtotal += $item['price'] * $item['quantity']; @endphp
                     <tr>
-                        <td>{{ $item['product'] }}</td>
-                        <td>{{ $item['variation'] }}</td>
-                        <td>{{ $item['quantity'] }}</td>
+                        <td>{{ $item['name'] }}</td>
+                        <td>
+                            {{ $item['quantity'] }}
+                            <form action="{{ route('cart.decrease', $id) }}" method="POST" style="display:inline-block">
+                              @csrf
+                              <button type="submit" class="btn btn-warning btn-sm" title="Remover 1 unidade">-1</button>
+                          </form>
+
+                          <form action="{{ route('cart.increase', $id) }}" method="POST" style="display:inline-block">
+                              @csrf
+                              <button type="submit" class="btn btn-success btn-sm" title="Adicionar 1 unidade">+1</button>
+                          </form>
+                        </td>
                         <td>R$ {{ number_format($item['price'] * $item['quantity'], 2, ',', '.') }}</td>
+
                     </tr>
-                    <h5>Subtotal: R$ {{ number_format($subtotal, 2, ',', '.') }}</h5>
-                    <h5>Frete: R$ {{ number_format($frete, 2, ',', '.') }}</h5>
-                    <h4>Total: R$ {{ number_format($total, 2, ',', '.') }}</h4>
                 @endforeach
             </tbody>
         </table>
 
-        @php
+    @php
+        $frete = 20;
+        if ($subtotal >= 52 && $subtotal <= 199.99) {
+            $frete = 15;
+        } elseif ($subtotal > 200) {
             $frete = 0;
-            if ($subtotal >= 52 && $subtotal <= 166.59) {
-                $frete = 15;
-            } elseif ($subtotal > 200) {
-                $frete = 0;
-            } else {
-                $frete = 20;
-            }
-            $total = $subtotal + $frete;
-        @endphp
+        } 
 
-        <p>Subtotal: R$ {{ number_format($subtotal, 2, ',', '.') }}</p>
-        <p>Frete: R$ {{ number_format($frete, 2, ',', '.') }}</p>
-        <p><strong>Total: R$ {{ number_format($total, 2, ',', '.') }}</strong></p>
+        $totalSemDesconto = $subtotal + $frete;
+    @endphp
 
-        <hr>
-        <h5>Endereço</h5>
-        <form method="POST" action="{{ route('cart.checkout') }}">
-            @csrf
-            <div class="row mb-2">
-                <div class="col">
-                    <input type="text" name="cep" id="cep" placeholder="CEP" class="form-control" required>
-                </div>
-                <div class="col">
-                    <input type="text" name="address" id="address" placeholder="Endereço" class="form-control" required>
-                </div>
-            </div>
+    <h5>Subtotal: R$ <span id="subtotal">{{ number_format($subtotal, 2, ',', '.') }}</span></h5>
+    <h5>Frete: R$ <span id="frete">{{ number_format($frete, 2, ',', '.') }}</span></h5>
+    <h4>Total: R$ <span id="total">{{ number_format($totalSemDesconto, 2, ',', '.') }}</span></h4>
+    <h5 id="descontoLine" style="display:none; color: green;">Desconto Cupom: -R$ <span id="descontoValor">2,99</span></h5>
 
-            <div class="mb-2">
-                <input type="text" name="coupon" placeholder="Cupom (opcional)" class="form-control">
+    <form method="POST" action="{{ route('cart.checkout') }}" id="checkoutForm">
+        @csrf
+        <div class="row mb-2">
+            <div class="col">
+                <input type="text" name="cep" id="cep" placeholder="CEP" class="form-control" required>
             </div>
+            <div class="col">
+                <input type="text" name="address" id="address" placeholder="Endereço" class="form-control" required>
+            </div>
+        </div>
 
-            <div class="mb-2">
-                <input type="text" name="email" placeholder="E-mail para envio" class="form-control" required>
-            </div>
+        <div class="mb-2">
+            <input type="text" name="coupon" id="coupon" placeholder="Cupom (opcional)" class="form-control">
+        </div>
 
-            <h4>Finalizar Pedido</h4>
-            @csrf
-            <div class="mb-2">
-                <label for="email" class="form-label">Seu e-mail</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
-            <div class="mb-2">
-                <label for="address" class="form-label">Endereço</label>
-                <input type="text" name="address" class="form-control" required>
-            </div>
+        <div class="mb-2">
+            <input type="email" name="email" placeholder="E-mail para envio" class="form-control" required>
+        </div>
+
+        <div class="mb-2">
+            <input type="text" name="customer_name" placeholder="Nome do Cliente" class="form-control" required>
+        </div>
+
+        <div class="mb-2" style="display: flex; gap: 10px; align-items: center;">
             <button type="submit" class="btn btn-success">Finalizar Pedido</button>
-        </form>
+            
+            
+        </div>
+    </form>
+    <form action="{{ route('cart.clear') }}" method="POST" style="display:inline-block;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja remover todos os itens do carrinho?')">
+            Remover Todos
+        </button>
+    </form>
 
-        <script>
-            document.getElementById('cep').addEventListener('blur', async function () {
-                const cep = this.value.replace(/\D/g, '');
-                if (cep.length === 8) {
-                    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-                    const data = await res.json();
-                    if (!data.erro) {
-                        document.getElementById('address').value = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
-                    }
+    <script>
+        function formatBRL(value) {
+            return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        const subtotal = parseFloat("{{ $subtotal }}");
+        const frete = parseFloat("{{ $frete }}");
+        const descontoFixo = 2.99;
+
+        const couponInput = document.getElementById('coupon');
+        const descontoLine = document.getElementById('descontoLine');
+        const totalSpan = document.getElementById('total');
+
+        couponInput.addEventListener('input', function() {
+            const cupom = this.value.trim().toLowerCase();
+
+            let total = subtotal + frete;
+            if (cupom === 'montink') {
+                total -= descontoFixo;
+                if (total < 0) total = 0;
+                descontoLine.style.display = 'block';
+            } else {
+                descontoLine.style.display = 'none';
+            }
+
+            totalSpan.textContent = formatBRL(total);
+        });
+
+        document.getElementById('cep').addEventListener('blur', async function () {
+            const cep = this.value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await res.json();
+                if (!data.erro) {
+                    document.getElementById('address').value = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
                 }
-            });
-        </script>
+            }
+        });
+    </script>
+
     @else
         <p>Seu carrinho está vazio.</p>
     @endif
