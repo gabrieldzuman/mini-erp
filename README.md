@@ -117,7 +117,7 @@ Acesse em: [http://localhost:8000](http://localhost:8000)
 | Subtotal           | Frete      |
 |--------------------|------------|
 | R$ 0,00 - R$ 51,99 | R$ 20,00   |
-| R$ 52 - R$ 166,59  | R$ 15,00   |
+| R$ 52 - R$ 199,99  | R$ 15,00   |
 | R$ 200+            | **Grátis** |
 
 ### Verificação de CEP
@@ -127,7 +127,7 @@ Acesse em: [http://localhost:8000](http://localhost:8000)
 
 ### Cupons
 
-- Aplique um cupom válido na tela de carrinho
+- Aplique o cupom "montink" para obter o desconto fixo.
 - Cupons são verificados por:
   - Código válido
   - Data de validade
