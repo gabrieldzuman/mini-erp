@@ -13,4 +13,13 @@ class Coupon extends Model
     {
         return Carbon::now()->lte(Carbon::parse($this->valid_until));
     }
+
+    public static function createFixedMontinkCoupon(): self
+    {
+        return self::firstOrCreate(
+['code' => 'montink'],
+    ['discount_value' => 2.99, 'min_value' => 0, 'valid_until' => now()->addYears(1)]
+        );
+    }
+
 }
