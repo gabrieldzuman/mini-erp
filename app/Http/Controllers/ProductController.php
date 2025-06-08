@@ -9,20 +9,17 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // Listar produtos
     public function index()
     {
         $products = Product::with('variations.stock')->get();
         return view('products.index', compact('products'));
     }
 
-    // Formulário de criação
     public function create()
     {
         return view('products.create');
     }
 
-    // Salvar produto
     public function store(Request $request)
     {
         $request->validate([
@@ -52,14 +49,12 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Produto criado com sucesso!');
     }
 
-    // Formulário de edição
     public function edit($id)
     {
         $product = Product::with('variations.stock')->findOrFail($id);
         return view('products.edit', compact('product'));
     }
 
-    // Atualizar produto
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -75,7 +70,6 @@ class ProductController extends Controller
             'price' => $request->price,
         ]);
 
-        // Atualizar variações existentes
         foreach ($request->variations as $key => $variationId) {
             $variation = ProductVariation::findOrFail($variationId);
             $variation->variation = $request->variation_names[$key];
@@ -89,7 +83,6 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso!');
     }
 
-    // Deletar produto
     public function destroy($id)
     {
         $product = Product::findOrFail($id);

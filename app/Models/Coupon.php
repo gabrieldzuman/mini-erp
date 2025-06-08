@@ -3,23 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 class Coupon extends Model
 {
-    protected $fillable = ['code', 'discount_value', 'min_value', 'valid_until'];
+    protected $fillable = [
+        'name',
+        'min_purchase',
+        'valid_until',
+        'max_usage',
+        'times_used',
+        'discount_value',
+        'discount_type',
+    ];
 
-    public function isValid(): bool
-    {
-        return Carbon::now()->lte(Carbon::parse($this->valid_until));
-    }
-
-    public static function createFixedMontinkCoupon(): self
-    {
-        return self::firstOrCreate(
-['code' => 'montink'],
-    ['discount_value' => 2.99, 'min_value' => 0, 'valid_until' => now()->addYears(1)]
-        );
-    }
-
+    protected $dates = ['valid_until'];
 }
+
