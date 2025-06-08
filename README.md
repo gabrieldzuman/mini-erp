@@ -1,10 +1,10 @@
-#  Mini ERP - Sistema de Controle de Pedidos, Produtos, Estoque e Cupons
+# 🧾 Mini ERP - Sistema de Controle de Pedidos, Produtos, Estoque e Cupons
 
 Este é um projeto de **Mini ERP** desenvolvido com **Laravel** que permite o gerenciamento completo de **produtos**, **estoque**, **pedidos**, **cupons**, **frete**, **verificação de CEP**, **sessão de carrinho**, **envio de e-mail ao finalizar pedido** e **webhook de atualização de status de pedidos**.
 
 ---
 
-##  Funcionalidades
+## 🚀 Funcionalidades
 
 - CRUD de Produtos e Estoque com controle de variações.
 - Carrinho de compras utilizando sessão.
@@ -16,7 +16,7 @@ Este é um projeto de **Mini ERP** desenvolvido com **Laravel** que permite o ge
 
 ---
 
-##  Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - **PHP 8.x**
 - **Laravel 10+**
@@ -30,7 +30,7 @@ Este é um projeto de **Mini ERP** desenvolvido com **Laravel** que permite o ge
 
 ---
 
-##  Estrutura do Banco de Dados
+## 🗃️ Estrutura do Banco de Dados
 
 **Tabelas:**
 
@@ -41,12 +41,12 @@ Este é um projeto de **Mini ERP** desenvolvido com **Laravel** que permite o ge
 
 ---
 
-##  Instalação
+## 📦 Instalação
 
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/gabrieldzuman/mini-erp
+git clone https://github.com/seu-usuario/mini-erp.git
 cd mini-erp
 ```
 
@@ -95,7 +95,7 @@ Acesse em: [http://localhost:8000](http://localhost:8000)
 
 ---
 
-##  Como usar
+## 🛍️ Como usar
 
 ### Cadastro de Produtos
 
@@ -117,7 +117,7 @@ Acesse em: [http://localhost:8000](http://localhost:8000)
 | Subtotal           | Frete      |
 |--------------------|------------|
 | R$ 0,00 - R$ 51,99 | R$ 20,00   |
-| R$ 52 - R$ 199,99  | R$ 15,00   |
+| R$ 52 - R$ 166,59  | R$ 15,00   |
 | R$ 200+            | **Grátis** |
 
 ### Verificação de CEP
@@ -127,7 +127,7 @@ Acesse em: [http://localhost:8000](http://localhost:8000)
 
 ### Cupons
 
-- Aplique o cupom "montink" para obter o desconto fixo.
+- Aplique um cupom válido na tela de carrinho
 - Cupons são verificados por:
   - Código válido
   - Data de validade
@@ -140,7 +140,7 @@ Acesse em: [http://localhost:8000](http://localhost:8000)
 
 ---
 
-##  Envio de E-mail
+## 📬 Envio de E-mail
 
 Configure seu `.env` com as credenciais SMTP (exemplo usando [Mailtrap](https://mailtrap.io)):
 
@@ -157,7 +157,7 @@ MAIL_FROM_NAME="Mini ERP"
 
 ---
 
-##  Webhook
+## 📡 Webhook
 
 O sistema escuta requisições `POST` na rota:
 
@@ -179,13 +179,13 @@ POST /api/webhook/pedido
 
 ---
 
-##  Testes
+## 🧪 Testes
 
 > Testes automatizados ainda não foram implementados neste MVP. Recomenda-se uso de Postman ou Insomnia para testes de rotas.
 
 ---
 
-## Considerações Finais
+## 📌 Considerações Finais
 
 - Projeto foi desenvolvido com foco em simplicidade e boas práticas de MVC.
 - Toda lógica está dividida entre Models, Controllers e Views.
@@ -193,7 +193,7 @@ POST /api/webhook/pedido
 
 ---
 
-##  Autor
+## 👨‍💻 Autor
 
 Desenvolvido por **Gabriel Dzuman**  
 

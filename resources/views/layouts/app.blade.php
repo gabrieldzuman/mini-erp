@@ -7,10 +7,11 @@
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/">Mini ERP</a>
+            <a class="navbar-brand" href="/products">Montink ERP</a>
             <div class="navbar-nav">
                 <a class="nav-link" href="{{ route('products.index') }}">Produtos</a>
                 <a class="nav-link" href="{{ route('cart.index') }}">Carrinho</a>
+                <a class="nav-link" href="{{ route('coupons.index') }}">Cupons</a> <!-- Adicionamos aqui o botão de cupons -->
             </div>
         </div>
     </nav>
